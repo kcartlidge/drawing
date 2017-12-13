@@ -7,11 +7,13 @@ Currently contains:
 
 * Create surfaces
 * Clear surfaces
+* Supports transparency
 * Plot points
 * Draw horizontal and vertical lines
 * Fill rectangles
 * Draw rectangle outlines
 * Write as a PNG stream
+* Some predefined colors
 
 ## instructions
 
