@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"image/color"
 	"log"
 	"os"
 
@@ -12,13 +11,40 @@ import (
 func main() {
 	fmt.Println("surface example")
 
+	// Drawing surface with a black background and yellow border.
 	const width, height = 250, 250
-	bg := color.NRGBA{R: 0, G: 0, B: 0, A: 128}
-	fg := color.NRGBA{R: 128, G: 128, B: 128, A: 255}
-	s := drawing.NewSurface(width, height, bg)
+	s := drawing.NewSurface(width, height, drawing.Black(255))
+	b := drawing.NewRect(5, 5, width-5, height-5)
+	s.DrawRect(b, drawing.Yellow(255))
+	midX := (width / 2)
 
-	s.DrawRect(s.Bounds, fg)
+	// Draw some bars with sample colors (internally also uses Hline).
+	s.FillRect(drawing.NewRect(10, 10, width-10, 12), drawing.Blue(255))
+	s.FillRect(drawing.NewRect(10, 15, width-10, 17), drawing.Red(255))
+	s.FillRect(drawing.NewRect(10, 20, width-10, 22), drawing.Magenta(255))
+	s.FillRect(drawing.NewRect(10, 25, width-10, 27), drawing.Green(255))
+	s.FillRect(drawing.NewRect(10, 30, width-10, 32), drawing.Cyan(255))
+	s.FillRect(drawing.NewRect(10, 35, width-10, 37), drawing.Yellow(255))
+	s.FillRect(drawing.NewRect(10, 40, width-10, 42), drawing.Gray(255))
+	s.FillRect(drawing.NewRect(10, 45, width-10, 47), drawing.LightBlue(255))
+	s.FillRect(drawing.NewRect(10, 50, width-10, 52), drawing.LightRed(255))
+	s.FillRect(drawing.NewRect(10, 55, width-10, 57), drawing.LightMagenta(255))
+	s.FillRect(drawing.NewRect(10, 60, width-10, 62), drawing.LightGreen(255))
+	s.FillRect(drawing.NewRect(10, 65, width-10, 67), drawing.LightCyan(255))
+	s.FillRect(drawing.NewRect(10, 70, width-10, 72), drawing.LightYellow(255))
 
+	// Draw a vertical separator.
+	s.Vline(drawing.NewPoint(midX, 85), drawing.NewPoint(midX, height-10), drawing.Blue(255))
+
+	// Show some standard (fast) lines.
+	s.Line(drawing.NewPoint(10, 85), drawing.NewPoint(midX-5, height-10), drawing.Cyan(255))
+	s.Line(drawing.NewPoint(midX-5, 85), drawing.NewPoint(10, height-10), drawing.Green(255))
+
+	// Show some anti-aliased lines.
+	s.LineA(drawing.NewPoint(midX+5, 85), drawing.NewPoint(width-10, height-10), drawing.Cyan(255))
+	s.LineA(drawing.NewPoint(width-10, 85), drawing.NewPoint(midX+5, height-10), drawing.Green(255))
+
+	// Export.
 	f, err := os.Create("example.png")
 	if err == nil {
 		err = s.WritePNG(f)

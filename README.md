@@ -10,16 +10,22 @@ Currently contains:
 * Supports transparency
 * Plot points
 * Draw horizontal and vertical lines
+* Draw non-aliased lines with fast integer routines
+* Draw anti-aliased lines (Xiaolin Wu's algorithm)
 * Fill rectangles
 * Draw rectangle outlines
 * Write as a PNG stream
 * Some predefined colors
 
-## instructions
+The anti-aliased line drawing needs a little more work to look better on all mixes
+of light and dark colors and backgrounds. This is in progress, but in the meantime
+works fine on dark backgrounds.
+
+## Instructions
 
 In progress.
 
-## building the example for all platforms
+## Building the example for all platforms
 
 Substitute the script file according to your own platform:
 
@@ -28,7 +34,7 @@ cd example
 ./scripts/macos.sh
 ```
 
-## creating and running a one-off build of the example
+## Creating and running a one-off build of the example
 
 Substitute the file name according to your own platform:
 

@@ -16,7 +16,7 @@ func Black(transparency uint8) color.NRGBA {
 
 // Blue ... Returns the color (transparency is 0 to 255).
 func Blue(transparency uint8) color.NRGBA {
-	return color.NRGBA{R: 48, G: 0, B: 176, A: transparency}
+	return color.NRGBA{R: 32, G: 0, B: 192, A: transparency}
 }
 
 // Red ... Returns the color (transparency is 0 to 255).
