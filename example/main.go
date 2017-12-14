@@ -53,6 +53,12 @@ func main() {
 	// Draw sample filled circle.
 	s.FillCircle((midX/2)+midX, ((height-85)/2)+85, (midX/2)-10, drawing.Red)
 
+	// Draw a color gradient.
+	cg := s.GetColorGradient(drawing.LightRed, drawing.LightGreen)
+	for x := 0; x <= 100; x++ {
+		s.Vline(drawing.NewPoint(x+(midX/4), 90), drawing.NewPoint(x+(midX/4), 100), cg[x])
+	}
+
 	// Export.
 	f, err := os.Create("example.png")
 	if err == nil {

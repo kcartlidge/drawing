@@ -15,6 +15,7 @@ Currently contains:
 * Filled rectangles
 * Circle outlines
 * Filled circles
+* Pre-calculated color gradients
 * Write as a PNG stream
 * Some predefined colors
 * Major routines show timings
