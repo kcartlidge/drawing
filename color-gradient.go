@@ -2,13 +2,10 @@ package drawing
 
 import (
 	"image/color"
-	"time"
 )
 
 // GetColorGradient ... Returns colors mapped by integer percentage from start to end.
 func (s *Surface) GetColorGradient(start, end color.RGBA) [101]color.RGBA {
-	defer s.trackDuration("GetColorGradient", time.Now())
-
 	// Pre-convert to avoid conversion creep.
 	sR := float64(start.R)
 	sG := float64(start.G)

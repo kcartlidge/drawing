@@ -14,21 +14,25 @@ func (s *Surface) Clear(c color.RGBA) {
 	s.FillRect(s.Bounds, s.Background)
 }
 
+// GetPoint ... Gets a point from the surface.
+func (s *Surface) GetPoint(x, y int) color.RGBA {
+	return s.Image.At(x, y).(color.RGBA)
+}
+
 // Plot ... Places a point on the surface.
 func (s *Surface) Plot(x, y int, c color.RGBA) {
 	s.Image.Set(x, y, c)
 }
 
-// PlotA ... Plots, with a naive antialiased weighted (0..1) second pixel.
+// PlotA ... Plots, with an antialiased weighted (0..1) second pixel.
 func (s *Surface) PlotA(x1, y1, x2, y2 float64, c color.RGBA, weight float64) {
-	c2 := color.RGBA{
-		R: uint8(float64(c.R) * weight),
-		G: uint8(float64(c.G) * weight),
-		B: uint8(float64(c.B) * weight),
-		A: c.A,
-	}
-	s.Image.Set(int(x1), int(y1), c)
-	s.Image.Set(int(x2), int(y2), c2)
+	X1, Y1, X2, Y2 := int(x1), int(y1), int(x2), int(y2)
+
+	bg := s.GetPoint(X2, Y2)
+	cg := s.GetColorGradient(bg, c)
+
+	s.Image.Set(X1, Y1, c)
+	s.Image.Set(X2, Y2, cg[int(weight*50)+50])
 }
 
 // PlotPoint ... Places a point on the surface.

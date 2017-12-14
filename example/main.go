@@ -21,6 +21,9 @@ func main() {
 	s.DrawRect(b, drawing.Yellow)
 	midX := (width / 2)
 
+	// Get the background color from the drawn inset border.
+	_ = s.GetPoint(5, 5)
+
 	// Draw some bars with sample colors (internally also uses Hline).
 	s.FillRect(drawing.NewRect(10, 10, width-10, 12), drawing.Blue)
 	s.FillRect(drawing.NewRect(10, 15, width-10, 17), drawing.Red)
@@ -39,6 +42,12 @@ func main() {
 	// Draw a vertical separator.
 	s.Vline(drawing.NewPoint(midX, 85), drawing.NewPoint(midX, height-10), drawing.Blue)
 
+	// Draw sample circles.
+	s.Circle(midX/2, ((height-85)/2)+85, (midX/2)-10, drawing.LightRed)
+
+	// Draw sample filled circle.
+	s.FillCircle((midX/2)+midX, ((height-85)/2)+85, (midX/2)-10, drawing.Red)
+
 	// Show some standard (fast) lines.
 	s.Line(drawing.NewPoint(10, 85), drawing.NewPoint(midX-5, height-10), drawing.Cyan)
 	s.Line(drawing.NewPoint(midX-5, 85), drawing.NewPoint(10, height-10), drawing.Green)
@@ -46,12 +55,6 @@ func main() {
 	// Show some anti-aliased lines.
 	s.LineA(drawing.NewPoint(midX+5, 85), drawing.NewPoint(width-10, height-10), drawing.Cyan)
 	s.LineA(drawing.NewPoint(width-10, 85), drawing.NewPoint(midX+5, height-10), drawing.Green)
-
-	// Draw sample circles.
-	s.Circle(midX/2, ((height-85)/2)+85, (midX/2)-10, drawing.LightRed)
-
-	// Draw sample filled circle.
-	s.FillCircle((midX/2)+midX, ((height-85)/2)+85, (midX/2)-10, drawing.Red)
 
 	// Draw a color gradient.
 	cg := s.GetColorGradient(drawing.LightRed, drawing.LightGreen)
