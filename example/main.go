@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	drawing "github.com/kcartlidge/drawing"
 )
@@ -13,11 +12,10 @@ func main() {
 	fmt.Println()
 	fmt.Println("Drawing Example")
 	fmt.Println()
-	defer drawing.TrackDuration("TOTAL TIME", time.Now())
 
 	// Drawing surface with a black background and yellow border.
 	const width, height = 500, 500
-	s := drawing.NewSurface(width, height, drawing.Black(255))
+	s := drawing.NewSurface(width, height, drawing.Black(255), drawing.LogDuration)
 	b := drawing.NewRect(5, 5, width-5, height-5)
 	s.DrawRect(b, drawing.Yellow(255))
 	midX := (width / 2)

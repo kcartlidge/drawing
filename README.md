@@ -1,7 +1,6 @@
 # drawing - a 2D drawing package
 
-This is a simple Go package for drawing on a 2D surface.
-It will include primitives, sprites, higher-level constructs, and PNG export.
+This is a simple Go package for drawing on a 2D surface. It includes primitives and PNG export, and will also support sprites and related higher-level constructs.
 
 Currently contains:
 

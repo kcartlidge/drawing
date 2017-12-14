@@ -8,7 +8,7 @@ import (
 
 // Clear ... Clears the entire surface.
 func (s *Surface) Clear() {
-	defer TrackDuration("clear", time.Now())
+	defer s.trackDuration("Clear", time.Now())
 
 	s.FillRect(s.Bounds, s.Background)
 }
@@ -92,7 +92,7 @@ func (s *Surface) Line(start, end Point, c color.NRGBA) {
 
 // LineA ... Draws an arbitrary antialiased line (Xiaolin Wu's algorithm).
 func (s *Surface) LineA(start, end Point, c color.NRGBA) {
-	defer TrackDuration("antialiased line", time.Now())
+	defer s.trackDuration("LineA", time.Now())
 
 	x0 := float64(start.X)
 	y0 := float64(start.Y)
@@ -161,7 +161,7 @@ func (s *Surface) LineA(start, end Point, c color.NRGBA) {
 
 // DrawRect ... Draws a rectangular outline.
 func (s *Surface) DrawRect(rect Rect, c color.NRGBA) {
-	defer TrackDuration("rectangle", time.Now())
+	defer s.trackDuration("DrawRect", time.Now())
 
 	s.Hline(rect.TopLeft, rect.TopRight, c)       // top
 	s.Hline(rect.BottomLeft, rect.BottomRight, c) // bottom
@@ -171,7 +171,7 @@ func (s *Surface) DrawRect(rect Rect, c color.NRGBA) {
 
 // FillRect ... Draws a solid rectangle.
 func (s *Surface) FillRect(rect Rect, c color.NRGBA) {
-	defer TrackDuration("filled rectangle", time.Now())
+	defer s.trackDuration("FillRect", time.Now())
 
 	for offs := 0; offs <= rect.Height; offs++ {
 		start := NewPoint(rect.TopLeft.X, rect.TopLeft.Y+offs)
@@ -182,7 +182,7 @@ func (s *Surface) FillRect(rect Rect, c color.NRGBA) {
 
 // Circle ... Draws a fast circle.
 func (s *Surface) Circle(centreX, centreY, radius int, c color.NRGBA) {
-	defer TrackDuration("circle", time.Now())
+	defer s.trackDuration("Circle", time.Now())
 
 	x := radius
 	y := 0
@@ -215,7 +215,7 @@ func (s *Surface) Circle(centreX, centreY, radius int, c color.NRGBA) {
 
 // FillCircle ... Draws a filled circle.
 func (s *Surface) FillCircle(centreX, centreY, radius int, c color.NRGBA) {
-	defer TrackDuration("filled circle", time.Now())
+	defer s.trackDuration("FillCircle", time.Now())
 
 	r2 := radius * radius
 	for cy := -radius; cy <= radius; cy++ {
