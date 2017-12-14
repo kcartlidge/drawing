@@ -12,10 +12,10 @@ import (
 type Surface struct {
 	log TimingLogFunc
 
-	Image         *image.NRGBA
+	Image         *image.RGBA
 	Bounds        Rect
 	Width, Height int
-	Background    color.NRGBA
+	Background    color.RGBA
 }
 
 // WritePNG ... Writes a PNG stream to the output (eg *io.File).

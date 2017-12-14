@@ -7,20 +7,21 @@ import (
 )
 
 // Clear ... Clears the entire surface.
-func (s *Surface) Clear() {
+func (s *Surface) Clear(c color.RGBA) {
 	defer s.trackDuration("Clear", time.Now())
 
+	s.Background = c
 	s.FillRect(s.Bounds, s.Background)
 }
 
 // Plot ... Places a point on the surface.
-func (s *Surface) Plot(x, y int, c color.NRGBA) {
+func (s *Surface) Plot(x, y int, c color.RGBA) {
 	s.Image.Set(x, y, c)
 }
 
-// PlotA ... Plots, with an antialiased weighted (0..1) second pixel.
-func (s *Surface) PlotA(x1, y1, x2, y2 float64, c color.NRGBA, weight float64) {
-	c2 := color.NRGBA{
+// PlotA ... Plots, with a naive antialiased weighted (0..1) second pixel.
+func (s *Surface) PlotA(x1, y1, x2, y2 float64, c color.RGBA, weight float64) {
+	c2 := color.RGBA{
 		R: uint8(float64(c.R) * weight),
 		G: uint8(float64(c.G) * weight),
 		B: uint8(float64(c.B) * weight),
@@ -31,12 +32,12 @@ func (s *Surface) PlotA(x1, y1, x2, y2 float64, c color.NRGBA, weight float64) {
 }
 
 // PlotPoint ... Places a point on the surface.
-func (s *Surface) PlotPoint(point Point, c color.NRGBA) {
+func (s *Surface) PlotPoint(point Point, c color.RGBA) {
 	s.Image.Set(point.X, point.Y, c)
 }
 
 // Hline ... Draws a horizontal line, ignoring any Y deviation.
-func (s *Surface) Hline(start, end Point, c color.NRGBA) {
+func (s *Surface) Hline(start, end Point, c color.RGBA) {
 	x1 := start.X
 	x2 := end.X
 	y := start.Y
@@ -46,7 +47,7 @@ func (s *Surface) Hline(start, end Point, c color.NRGBA) {
 }
 
 // Vline ... Draws a vertical line, ignoring any X deviation.
-func (s *Surface) Vline(start, end Point, c color.NRGBA) {
+func (s *Surface) Vline(start, end Point, c color.RGBA) {
 	x := start.X
 	y1 := start.Y
 	y2 := end.Y
@@ -56,7 +57,7 @@ func (s *Surface) Vline(start, end Point, c color.NRGBA) {
 }
 
 // Line ... Draws a line (using Bresenham, no anti-aliasing).
-func (s *Surface) Line(start, end Point, c color.NRGBA) {
+func (s *Surface) Line(start, end Point, c color.RGBA) {
 	p := NewPoint(start.X, start.Y)
 
 	// Calculate movement and inherent deviation.
@@ -90,8 +91,8 @@ func (s *Surface) Line(start, end Point, c color.NRGBA) {
 	}
 }
 
-// LineA ... Draws an arbitrary antialiased line (Xiaolin Wu's algorithm).
-func (s *Surface) LineA(start, end Point, c color.NRGBA) {
+// LineA ... Draws an arbitrary naive antialiased line (Xiaolin Wu's algorithm).
+func (s *Surface) LineA(start, end Point, c color.RGBA) {
 	defer s.trackDuration("LineA", time.Now())
 
 	x0 := float64(start.X)
@@ -160,7 +161,7 @@ func (s *Surface) LineA(start, end Point, c color.NRGBA) {
 }
 
 // DrawRect ... Draws a rectangular outline.
-func (s *Surface) DrawRect(rect Rect, c color.NRGBA) {
+func (s *Surface) DrawRect(rect Rect, c color.RGBA) {
 	defer s.trackDuration("DrawRect", time.Now())
 
 	s.Hline(rect.TopLeft, rect.TopRight, c)       // top
@@ -170,7 +171,7 @@ func (s *Surface) DrawRect(rect Rect, c color.NRGBA) {
 }
 
 // FillRect ... Draws a solid rectangle.
-func (s *Surface) FillRect(rect Rect, c color.NRGBA) {
+func (s *Surface) FillRect(rect Rect, c color.RGBA) {
 	defer s.trackDuration("FillRect", time.Now())
 
 	for offs := 0; offs <= rect.Height; offs++ {
@@ -181,7 +182,7 @@ func (s *Surface) FillRect(rect Rect, c color.NRGBA) {
 }
 
 // Circle ... Draws a fast circle.
-func (s *Surface) Circle(centreX, centreY, radius int, c color.NRGBA) {
+func (s *Surface) Circle(centreX, centreY, radius int, c color.RGBA) {
 	defer s.trackDuration("Circle", time.Now())
 
 	x := radius
@@ -214,7 +215,7 @@ func (s *Surface) Circle(centreX, centreY, radius int, c color.NRGBA) {
 }
 
 // FillCircle ... Draws a filled circle.
-func (s *Surface) FillCircle(centreX, centreY, radius int, c color.NRGBA) {
+func (s *Surface) FillCircle(centreX, centreY, radius int, c color.RGBA) {
 	defer s.trackDuration("FillCircle", time.Now())
 
 	r2 := radius * radius
