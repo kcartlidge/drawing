@@ -1,8 +1,16 @@
 package drawing
 
 import (
+	"log"
 	"math"
+	"time"
 )
+
+// TrackDuration ... Deferred execution logs duration of the current scope.
+func TrackDuration(name string, started time.Time) {
+	sofar := time.Since(started)
+	log.Printf("- %s - %s", name, sofar)
+}
 
 func intAbs(v int) int {
 	if v < 0 {

@@ -9,13 +9,16 @@ Currently contains:
 * Clear surfaces
 * Supports transparency
 * Plot points
-* Draw horizontal and vertical lines
-* Draw non-aliased lines with fast integer routines
-* Draw anti-aliased lines (Xiaolin Wu's algorithm)
-* Fill rectangles
-* Draw rectangle outlines
+* Horizontal and vertical lines
+* Non-aliased lines with fast integer routines
+* Anti-aliased lines (Xiaolin Wu's algorithm)
+* Rectangle outlines
+* Filled rectangles
+* Circle outlines
+* Filled circles
 * Write as a PNG stream
 * Some predefined colors
+* Major routines show timings
 
 The anti-aliased line drawing needs a little more work to look better on all mixes
 of light and dark colors and backgrounds. This is in progress, but in the meantime

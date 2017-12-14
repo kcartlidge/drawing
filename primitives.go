@@ -3,10 +3,13 @@ package drawing
 import (
 	"image/color"
 	"math"
+	"time"
 )
 
 // Clear ... Clears the entire surface.
 func (s *Surface) Clear() {
+	defer TrackDuration("clear", time.Now())
+
 	s.FillRect(s.Bounds, s.Background)
 }
 
@@ -89,6 +92,8 @@ func (s *Surface) Line(start, end Point, c color.NRGBA) {
 
 // LineA ... Draws an arbitrary antialiased line (Xiaolin Wu's algorithm).
 func (s *Surface) LineA(start, end Point, c color.NRGBA) {
+	defer TrackDuration("antialiased line", time.Now())
+
 	x0 := float64(start.X)
 	y0 := float64(start.Y)
 	x1 := float64(end.X)
@@ -156,6 +161,8 @@ func (s *Surface) LineA(start, end Point, c color.NRGBA) {
 
 // DrawRect ... Draws a rectangular outline.
 func (s *Surface) DrawRect(rect Rect, c color.NRGBA) {
+	defer TrackDuration("rectangle", time.Now())
+
 	s.Hline(rect.TopLeft, rect.TopRight, c)       // top
 	s.Hline(rect.BottomLeft, rect.BottomRight, c) // bottom
 	s.Vline(rect.TopLeft, rect.BottomLeft, c)     // left
@@ -164,9 +171,57 @@ func (s *Surface) DrawRect(rect Rect, c color.NRGBA) {
 
 // FillRect ... Draws a solid rectangle.
 func (s *Surface) FillRect(rect Rect, c color.NRGBA) {
+	defer TrackDuration("filled rectangle", time.Now())
+
 	for offs := 0; offs <= rect.Height; offs++ {
 		start := NewPoint(rect.TopLeft.X, rect.TopLeft.Y+offs)
 		end := NewPoint(rect.TopRight.X, rect.TopLeft.Y+offs)
 		s.Hline(start, end, c)
+	}
+}
+
+// Circle ... Draws a fast circle.
+func (s *Surface) Circle(centreX, centreY, radius int, c color.NRGBA) {
+	defer TrackDuration("circle", time.Now())
+
+	x := radius
+	y := 0
+	err := 0
+
+	for {
+		// Plot all octants at the same time.
+		s.Plot(centreX+x, centreY+y, c)
+		s.Plot(centreX+x, centreY-y, c)
+		s.Plot(centreX-x, centreY-y, c)
+		s.Plot(centreX-x, centreY+y, c)
+		s.Plot(centreX+y, centreY+x, c)
+		s.Plot(centreX+y, centreY-x, c)
+		s.Plot(centreX-y, centreY-x, c)
+		s.Plot(centreX-y, centreY+x, c)
+
+		if x <= y {
+			return
+		}
+
+		// Move on.
+		err += 2*y + 1
+		y++
+		if err > x {
+			err += 1 - 2*x
+			x--
+		}
+	}
+}
+
+// FillCircle ... Draws a filled circle.
+func (s *Surface) FillCircle(centreX, centreY, radius int, c color.NRGBA) {
+	defer TrackDuration("filled circle", time.Now())
+
+	r2 := radius * radius
+	for cy := -radius; cy <= radius; cy++ {
+		cx := (int)(math.Sqrt(float64(r2-cy*cy)) + 0.5)
+		cyy := cy + centreY
+
+		s.Line(NewPoint(centreX-cx, cyy), NewPoint(centreX+cx, cyy), c)
 	}
 }
