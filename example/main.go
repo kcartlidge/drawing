@@ -62,6 +62,22 @@ func main() {
 		s.Vline(drawing.NewPoint(x+(midX/4), 90), drawing.NewPoint(x+(midX/4), 100), cg[x])
 	}
 
+	// Draw a polygon.
+	qX := midX / 2
+	poly := drawing.NewPolygon(
+		drawing.NewPoint(qX-30, 120),
+		drawing.NewPoint(qX+30, 110),
+		drawing.NewPoint(qX+60, 170),
+		drawing.NewPoint(qX, 160),
+	)
+	s.DrawPolygon(poly, drawing.LightMagenta)
+
+	// Draw a polygon (antialiased).
+	for i := 0; i < len(poly); i++ {
+		poly[i].X += midX
+	}
+	s.DrawPolygonA(poly, drawing.LightMagenta)
+
 	// Export.
 	f, err := os.Create("example.png")
 	if err == nil {

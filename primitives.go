@@ -242,3 +242,25 @@ func (s *Surface) FillCircle(centreX, centreY, radius int, c color.RGBA) {
 		s.Line(NewPoint(centreX-cx, cyy), NewPoint(centreX+cx, cyy), c)
 	}
 }
+
+// DrawPolygon ... Draws a polygon, joining the end point back to the start.
+func (s *Surface) DrawPolygon(polygon Polygon, c color.RGBA) {
+	if len(polygon) < 3 {
+		return
+	}
+	for i := 1; i < len(polygon); i++ {
+		s.Line(polygon[i-1], polygon[i], c)
+	}
+	s.Line(polygon[len(polygon)-1], polygon[0], c)
+}
+
+// DrawPolygonA ... Draws an antialiased polygon, joining the end point back to the start.
+func (s *Surface) DrawPolygonA(polygon Polygon, c color.RGBA) {
+	if len(polygon) < 3 {
+		return
+	}
+	for i := 1; i < len(polygon); i++ {
+		s.LineA(polygon[i-1], polygon[i], c)
+	}
+	s.LineA(polygon[len(polygon)-1], polygon[0], c)
+}

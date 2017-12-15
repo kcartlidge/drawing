@@ -14,6 +14,8 @@ Currently contains:
 * Filled rectangle
 * Circle outline
 * Filled circle
+* Polygon outline
+* Antialiased polygon outline
 * Pre-calculated color gradient
 * Weighted color on a scale
 * Write as a PNG stream
