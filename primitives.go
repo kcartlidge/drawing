@@ -19,6 +19,19 @@ func (s *Surface) GetPoint(x, y int) color.RGBA {
 	return s.Image.At(x, y).(color.RGBA)
 }
 
+// GetWeightedColor ... Calculate weighted (0..100) color moving from c1 to c2.
+func (s *Surface) GetWeightedColor(c1, c2 color.RGBA, weight float64) color.RGBA {
+	weight = math.Min(1, math.Max(0, weight))
+	c1R, c1G, c1B := float64(c1.R), float64(c1.G), float64(c1.B)
+	mvR, mvG, mvB := float64(c2.R)-c1R, float64(c2.G)-c1G, float64(c2.B)-c1B
+	return color.RGBA{
+		R: uint8(c1R + (mvR * weight)),
+		G: uint8(c1G + (mvG * weight)),
+		B: uint8(c1B + (mvB * weight)),
+		A: c2.A,
+	}
+}
+
 // Plot ... Places a point on the surface.
 func (s *Surface) Plot(x, y int, c color.RGBA) {
 	s.Image.Set(x, y, c)
@@ -27,12 +40,11 @@ func (s *Surface) Plot(x, y int, c color.RGBA) {
 // PlotA ... Plots, with an antialiased weighted (0..1) second pixel.
 func (s *Surface) PlotA(x1, y1, x2, y2 float64, c color.RGBA, weight float64) {
 	X1, Y1, X2, Y2 := int(x1), int(y1), int(x2), int(y2)
-
-	bg := s.GetPoint(X2, Y2)
-	cg := s.GetColorGradient(bg, c)
+	weight = math.Min(1.0, weight*1.3)
+	c2 := s.GetWeightedColor(s.GetPoint(X2, Y2), c, weight*1.2)
 
 	s.Image.Set(X1, Y1, c)
-	s.Image.Set(X2, Y2, cg[int(weight*50)+50])
+	s.Image.Set(X2, Y2, c2)
 }
 
 // PlotPoint ... Places a point on the surface.

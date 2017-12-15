@@ -15,6 +15,7 @@ Currently contains:
 * Circle outline
 * Filled circle
 * Pre-calculated color gradient
+* Weighted color on a scale
 * Write as a PNG stream
 * Some predefined colors
 * Some functionality shows timings
