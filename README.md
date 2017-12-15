@@ -24,7 +24,7 @@ Currently contains:
 
 ## Instructions
 
-In progress.
+See the [HOW-TO](HOW-TO.md).
 
 ## Building the example for all platforms
 
