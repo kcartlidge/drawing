@@ -26,6 +26,8 @@ Currently contains:
 
 See the [HOW-TO](HOW-TO.md).
 
+![Example Output](example/example.png)
+
 ## Building the example for all platforms
 
 Substitute the script file according to your own platform:
